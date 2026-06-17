@@ -3,95 +3,61 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>دعوة زفاف محمود و لقاء</title>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700;900&display=swap" rel="stylesheet">
+<title>اضغط هنا 😅</title>
+
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Cairo',sans-serif}
-html{scroll-behavior:smooth}
-body{background:linear-gradient(to bottom,#fffdf8,#f7efd9);overflow-x:hidden;color:#5c4517}
-#splash{position:fixed;inset:0;background:#111;display:flex;flex-direction:column;justify-content:center;align-items:center;z-index:9999;transition:1s}
-.splash-title{font-size:60px;font-weight:900;color:#d4af37;text-align:center}
-.enter-btn{margin-top:30px;padding:15px 40px;border:none;border-radius:50px;background:linear-gradient(45deg,#d4af37,#f9dd87);font-size:20px;font-weight:bold;cursor:pointer}
-.hero{min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
-.card{width:100%;max-width:850px;background:rgba(255,255,255,.35);backdrop-filter:blur(15px);padding:40px;border-radius:35px;box-shadow:0 10px 35px rgba(0,0,0,.08);text-align:center}
-.basmala{font-size:28px;color:#b8860b}
-.names{font-size:80px;font-weight:900;margin:20px 0;color:#c79a12}
-.verse{font-size:22px;line-height:2;margin:20px auto;max-width:700px}
-.info{font-size:24px;line-height:2;margin-top:20px}
-.countdown{display:flex;justify-content:center;gap:15px;flex-wrap:wrap;margin-top:30px}
-.time-box{width:110px;height:110px;background:#fff;border-radius:50%;display:flex;flex-direction:column;justify-content:center;align-items:center}
-.btn{display:inline-block;margin-top:35px;padding:16px 35px;border-radius:50px;text-decoration:none;font-size:20px;font-weight:bold;background:linear-gradient(45deg,#d4af37,#f9dd87);color:#111}
-.music-btn{position:fixed;bottom:20px;left:20px;width:60px;height:60px;border:none;border-radius:50%;background:#d4af37;font-size:24px;cursor:pointer;z-index:1000}
-footer{text-align:center;padding:40px;font-size:24px}
-@media(max-width:768px){
-.card{padding:25px 15px;border-radius:25px}
-.names{font-size:42px}
-.basmala{font-size:22px}
-.verse{font-size:16px}
-.info{font-size:18px}
-.time-box{width:75px;height:75px}
-.btn{width:100%;font-size:17px}
-footer{font-size:18px}
+body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+    background:#111;
+    font-family:Cairo,sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+#btn{
+    position:absolute;
+    padding:15px 30px;
+    font-size:22px;
+    cursor:pointer;
+    border:none;
+    border-radius:12px;
+}
+
+#msg{
+    color:white;
+    font-size:60px;
+    display:none;
 }
 </style>
 </head>
 <body>
 
-<audio id="weddingMusic" loop>
-<source src="ahll.mp3" type="audio/mpeg">
-</audio>
-
-<div id="splash">
-<div class="splash-title">محمود ❤️ لقاء</div>
-<button class="enter-btn" onclick="enterSite()">دخول الدعوة</button>
-</div>
-
-<section class="hero">
-<div class="card">
-<div class="basmala">بسم الله الرحمن الرحيم</div>
-<div class="names">محمود & لقاء</div>
-<div class="verse">﴿ وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ﴾</div>
-<div class="info">يسرنا دعوتكم لحضور حفل زفافنا<br><br>📅 السبت 20 يونيو 2026<br>📍 قاعة الماسة - قلين</div>
-
-<div class="countdown">
-<div class="time-box"><span id="days">0</span><span>يوم</span></div>
-<div class="time-box"><span id="hours">0</span><span>ساعة</span></div>
-<div class="time-box"><span id="minutes">0</span><span>دقيقة</span></div>
-<div class="time-box"><span id="seconds">0</span><span>ثانية</span></div>
-</div>
-
-<a href="https://maps.app.goo.gl/pWg3LekhAhGSJvTt9" target="_blank" class="btn">📍 عرض موقع القاعة</a>
-</div>
-</section>
-
-<footer>اللهم بارك لهما وبارك عليهما واجمع بينهما في خير 🤍</footer>
-
-<button class="music-btn" onclick="toggleMusic()">🔊</button>
+<button id="btn">اضغط هنا</button>
+<h1 id="msg">طز فيك 😂</h1>
 
 <script>
-const music=document.getElementById("weddingMusic");
+const btn = document.getElementById("btn");
+const msg = document.getElementById("msg");
 
-function enterSite(){
-music.play();
-document.getElementById("splash").style.opacity="0";
-setTimeout(()=>{document.getElementById("splash").style.display="none";},1000);
-}
+let count = 0;
 
-function toggleMusic(){
-const btn=document.querySelector(".music-btn");
-if(music.paused){music.play();btn.innerHTML="🔊";}
-else{music.pause();btn.innerHTML="🔇";}
-}
+btn.addEventListener("click", () => {
+    count++;
 
-const weddingDate=new Date("2026-06-20T20:00:00").getTime();
-setInterval(()=>{
-const now=new Date().getTime();
-const d=weddingDate-now;
-document.getElementById("days").innerHTML=Math.floor(d/(1000*60*60*24));
-document.getElementById("hours").innerHTML=Math.floor((d%(1000*60*60*24))/(1000*60*60));
-document.getElementById("minutes").innerHTML=Math.floor((d%(1000*60*60))/(1000*60));
-document.getElementById("seconds").innerHTML=Math.floor((d%(1000*60))/1000);
-},1000);
+    if(count < 10){
+        const x = Math.random() * (window.innerWidth - 150);
+        const y = Math.random() * (window.innerHeight - 70);
+
+        btn.style.left = x + "px";
+        btn.style.top = y + "px";
+    } else {
+        btn.style.display = "none";
+        msg.style.display = "block";
+    }
+});
 </script>
 
 </body>
