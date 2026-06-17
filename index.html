@@ -1,63 +1,88 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>اضغط هنا 😅</title>
-
+<title>Heart Text Animation</title>
 <style>
 body{
     margin:0;
-    height:100vh;
+    background:#000;
     overflow:hidden;
-    background:#111;
-    font-family:Cairo,sans-serif;
-    display:flex;
-    justify-content:center;
-    align-items:center;
 }
 
-#btn{
-    position:absolute;
-    padding:15px 30px;
-    font-size:22px;
-    cursor:pointer;
-    border:none;
-    border-radius:12px;
-}
-
-#msg{
-    color:white;
-    font-size:60px;
-    display:none;
+canvas{
+    display:block;
 }
 </style>
 </head>
 <body>
 
-<button id="btn">اضغط هنا</button>
-<h1 id="msg">طز فيك 😂</h1>
+<canvas id="c"></canvas>
 
 <script>
-const btn = document.getElementById("btn");
-const msg = document.getElementById("msg");
+const canvas = document.getElementById("c");
+const ctx = canvas.getContext("2d");
 
-let count = 0;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-btn.addEventListener("click", () => {
-    count++;
+const text = "BLOWJOB";
 
-    if(count < 10){
-        const x = Math.random() * (window.innerWidth - 150);
-        const y = Math.random() * (window.innerHeight - 70);
+const tempCanvas = document.createElement("canvas");
+const tempCtx = tempCanvas.getContext("2d");
 
-        btn.style.left = x + "px";
-        btn.style.top = y + "px";
-    } else {
-        btn.style.display = "none";
-        msg.style.display = "block";
+tempCanvas.width = canvas.width;
+tempCanvas.height = canvas.height;
+
+tempCtx.fillStyle = "white";
+tempCtx.font = "bold 150px Arial";
+tempCtx.textAlign = "center";
+tempCtx.fillText(text, canvas.width/2, canvas.height/2);
+
+const imageData = tempCtx.getImageData(0,0,tempCanvas.width,tempCanvas.height);
+const particles = [];
+
+for(let y=0;y<imageData.height;y+=8){
+    for(let x=0;x<imageData.width;x+=8){
+        const index = (y * imageData.width + x) * 4;
+        if(imageData.data[index+3] > 128){
+            particles.push({
+                x: Math.random()*canvas.width,
+                y: Math.random()*canvas.height,
+                tx: x,
+                ty: y
+            });
+        }
     }
-});
+}
+
+function drawHeart(x,y,size){
+    ctx.save();
+    ctx.translate(x,y);
+    ctx.fillStyle = "#ff3366";
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.bezierCurveTo(-size,-size,-size*2,size/2,0,size*2);
+    ctx.bezierCurveTo(size*2,size/2,size,-size,0,0);
+    ctx.fill();
+    ctx.restore();
+}
+
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    particles.forEach(p=>{
+        p.x += (p.tx - p.x) * 0.05;
+        p.y += (p.ty - p.y) * 0.05;
+
+        drawHeart(p.x,p.y,3);
+    });
+
+    requestAnimationFrame(animate);
+}
+
+animate();
 </script>
 
 </body>
