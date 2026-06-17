@@ -1,83 +1,62 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ar">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Heart Text Animation</title>
+<title>مطاردة الماوس</title>
+
 <style>
 body{
     margin:0;
-    background:#000;
+    height:100vh;
     overflow:hidden;
+    background:#111;
+    cursor:crosshair;
 }
 
-canvas{
-    display:block;
+.runner{
+    position:fixed;
+    width:120px;
+    height:120px;
+    font-size:90px;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
 }
 </style>
 </head>
 <body>
 
-<canvas id="c"></canvas>
+<div class="runner" id="runner">🏃🏿‍♂️</div>
 
 <script>
-const canvas = document.getElementById("c");
-const ctx = canvas.getContext("2d");
+const runner = document.getElementById("runner");
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+let x = window.innerWidth/2;
+let y = window.innerHeight/2;
 
-const text = "BLOWJOB";
+let mouseX = x;
+let mouseY = y;
 
-const tempCanvas = document.createElement("canvas");
-const tempCtx = tempCanvas.getContext("2d");
-
-tempCanvas.width = canvas.width;
-tempCanvas.height = canvas.height;
-
-tempCtx.fillStyle = "white";
-tempCtx.font = "bold 150px Arial";
-tempCtx.textAlign = "center";
-tempCtx.fillText(text, canvas.width/2, canvas.height/2);
-
-const imageData = tempCtx.getImageData(0,0,tempCanvas.width,tempCanvas.height);
-const particles = [];
-
-for(let y=0;y<imageData.height;y+=8){
-    for(let x=0;x<imageData.width;x+=8){
-        const index = (y * imageData.width + x) * 4;
-        if(imageData.data[index+3] > 128){
-            particles.push({
-                x: Math.random()*canvas.width,
-                y: Math.random()*canvas.height,
-                tx: x,
-                ty: y
-            });
-        }
-    }
-}
-
-function drawHeart(x,y,size){
-    ctx.save();
-    ctx.translate(x,y);
-    ctx.fillStyle = "#ff3366";
-    ctx.beginPath();
-    ctx.moveTo(0,0);
-    ctx.bezierCurveTo(-size,-size,-size*2,size/2,0,size*2);
-    ctx.bezierCurveTo(size*2,size/2,size,-size,0,0);
-    ctx.fill();
-    ctx.restore();
-}
+document.addEventListener("mousemove",(e)=>{
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+});
 
 function animate(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-    particles.forEach(p=>{
-        p.x += (p.tx - p.x) * 0.05;
-        p.y += (p.ty - p.y) * 0.05;
+    x += (mouseX - x) * 0.03;
+    y += (mouseY - y) * 0.03;
 
-        drawHeart(p.x,p.y,3);
-    });
+    runner.style.left = x + "px";
+    runner.style.top = y + "px";
+
+    if(mouseX > x){
+        runner.style.transform =
+        "translate(-50%,-50%) scaleX(1)";
+    }else{
+        runner.style.transform =
+        "translate(-50%,-50%) scaleX(-1)";
+    }
 
     requestAnimationFrame(animate);
 }
